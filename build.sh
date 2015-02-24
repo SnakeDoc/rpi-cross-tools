@@ -202,4 +202,6 @@ PATH="${PATH}:${__dir}/target/crosstool-ng-install/bin"
 
 cd "${__dir}/target"
 
+cp -v ../config-cortexa7_neonvfpv4 ./.config
+ct-ng build
 
