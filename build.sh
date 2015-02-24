@@ -1,25 +1,28 @@
 #!/usr/bin/env bash
-# BASH3 Boilerplate
+#
+# build.sh
 #
 # This file:
-#  - Is a template to write better bash scripts
-#  - Is delete-key friendly, in case you don't need e.g. command line option parsing
+#  - Builds the arm-cortexa7_neonvfpv4-linux-gnueabihf cross-compiler
 #
 # More info:
-#  - https://github.com/kvz/bash3boilerplate
-#  - http://kvz.io/blog/2013/02/26/introducing-bash3boilerplate/
+#  - https://github.com/SnakeDoc/arm-cortexa7_neonvfpv4-linux-gnueabihf
 #
-# Version 1.0.0
+# Version 0.1.0
 #
 # Authors:
-#  - Kevin van Zonneveld (http://kvz.io)
+#  - Jason Sipula (https://github.com/SnakeDoc)
 #
 # Usage:
-#  LOG_LEVEL=7 ./main.sh -f /tmp/x -d
+#  LOG_LEVEL=7 ./build.sh -f /tmp/x -d
 #
 # Licensed under MIT
+# Copyright (c) 2015 Jason Sipula (https://github.com/SnakeDoc)
+#
+# BASH3 Boilerplate Template
+# Licensed under MIT
 # Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io)
-
+#
 
 ### Configuration
 #####################################################################
@@ -181,4 +184,30 @@ error "Non-urgent failures, these should be relayed to developers or admins; eac
 critical "Should be corrected immediately, but indicates failure in a primary system, an example is a loss of a backup ISP connection."
 alert "Should be corrected immediately, therefore notify staff who can fix the problem. An example would be the loss of a primary ISP connection."
 emergency "A \"panic\" condition usually affecting multiple apps/servers/sites. At this level it would usually notify all tech staff on call."
+
+### Begin Program
+#####################################################################
+if [ ! -d "target" ]; then
+    info "Creating target/"
+    mkdir -pv target
+fi
+
+cd -v target/
+
+info "Cloning latest crosstool-ng"
+if [ ! -d "crosstool-ng" ]; then
+    git clone https://github.com/crosstool-ng/crosstool-ng --depth=1
+fi
+cd -v crosstool-ng/
+git fetch
+git reset --hard "origin/master"
+
+./configure --prefix="${__dir}/target/crosstool-ng-install"
+make
+make install
+
+PATH="${PATH}:${__dir}/target/crosstool-ng-install/bin"
+
+cd "${__dir}/target"
+
 
