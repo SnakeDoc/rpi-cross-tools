@@ -203,5 +203,13 @@ PATH="${PATH}:${__dir}/target/crosstool-ng-install/bin"
 cd "${__dir}/target"
 
 cp -v ../config-cortexa7_neonvfpv4 ./.config
+
+TMP="${__dir}/target/cross-tools"
+sed -i 's>\[PREFIX_DIR\]>'"${TMP}"'>g' ./.config
+
+CORES=$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
+THREADS=$(echo "${CORES}" "1.5" | awk '{printf "%.0f\n",$1*$2}')
+sed -i 's>\[THREADS\]>'"${THREADS}"'>g' ./.config
+
 ct-ng build
 
