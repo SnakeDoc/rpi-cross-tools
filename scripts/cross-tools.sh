@@ -3,7 +3,7 @@
 # cross-tools.sh
 #
 # This file:
-#  - Builds the arm-cortexa7_neonvfpv4-linux-gnueabihf cross-compiler
+#  - Builds the arm-rpi2-linux-gnueabihf cross-compilation toolchain
 #
 
 ### Begin Program
@@ -20,7 +20,7 @@ fi
 cd "${SOURCE_DIR}"
 rm -fv .config*
 
-cp -v "${CONFIGS_DIR}/config-cortexa7_neonvfpv4" .config
+cp -v "${CONFIGS_DIR}/config-rpi2" .config
 
 sed -i 's>\[PREFIX_DIR\]>'"${XTOOLS_DIR}"'>g' .config
 
