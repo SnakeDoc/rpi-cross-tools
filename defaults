@@ -1,0 +1,26 @@
+#####
+# Default Variables
+#####
+
+# Set magic variables for current FILE & DIR
+__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
+
+# Determine how many physical cpu cores
+export CORES=$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
+# Determine optimum number of concurrent jobs for gcc
+export THREADS=$(echo "${CORES}" "1.5" | awk '{printf "%.0f\n",$1*$2}')
+
+export CONFIGS_DIR="${__dir}/configs"
+export SCRIPTS_DIR="${__dir}/scripts"
+export TARGET_DIR="${__dir}/target"
+export SOURCE_DIR="${TARGET_DIR}/sources"
+
+export CT_NG_NAME="crosstool-ng"
+export CT_NG_SOURCE_DIR="${SOURCE_DIR}/${CT_NG_NAME}"
+export CT_NG_GIT_URL="https://github.com/${CT_NG_NAME}/${CT_NG_NAME}"
+export CT_NG="${TARGET_DIR}/${CT_NG_NAME}/bin/ct-ng"
+
+export XTOOLS_NAME="cross-tools"
+export XTOOLS_DIR="${TARGET_DIR}/${XTOOLS_NAME}"
+

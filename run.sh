@@ -1,48 +1,24 @@
-#!/usr/bin/env bash
-#
-# build.sh
+#####
+# run.sh
 #
 # This file:
-#  - Builds the arm-cortexa7_neonvfpv4-linux-gnueabihf cross-compiler
-#
-# More info:
-#  - https://github.com/SnakeDoc/arm-cortexa7_neonvfpv4-linux-gnueabihf
-#
-# Version 0.1.0
+#  - Runs project build scripts.
 #
 # Authors:
 #  - Jason Sipula (https://github.com/SnakeDoc)
-#
-# Usage:
-#  LOG_LEVEL=7 ./build.sh -f /tmp/x -d
-#
-# Licensed under MIT
-# Copyright (c) 2015 Jason Sipula (https://github.com/SnakeDoc)
-#
-# BASH3 Boilerplate Template
-# Licensed under MIT
-# Copyright (c) 2013 Kevin van Zonneveld (http://kvz.io)
-#
 
 ### Configuration
 #####################################################################
 
 # Environment variables and their defaults
-LOG_LEVEL="${LOG_LEVEL:-6}" # 7 = debug -> 0 = emergency
+export LOG_LEVEL="${LOG_LEVEL:-6}" # 7 = debug -> 0 = emergency
 
 # Commandline options. This defines the usage page, and is used to parse cli
 # opts & defaults from. The parsing is unforgiving so be precise in your syntax
 read -r -d '' usage <<-'EOF'
-  -f   [arg] Filename to process. Required.
-  -t   [arg] Location of tempfile. Default="/tmp/bar"
   -d         Enables debug mode
   -h         This page
 EOF
-
-# Set magic variables for current FILE & DIR
-__dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-__file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
-
 
 ### Functions
 #####################################################################
@@ -71,6 +47,17 @@ function warning ()   { [ "${LOG_LEVEL}" -ge 4 ] && echo "$(_fmt warning) ${@}" 
 function notice ()    { [ "${LOG_LEVEL}" -ge 5 ] && echo "$(_fmt notice) ${@}" 1>&2 || true; }
 function info ()      { [ "${LOG_LEVEL}" -ge 6 ] && echo "$(_fmt info) ${@}" 1>&2 || true; }
 function debug ()     { [ "${LOG_LEVEL}" -ge 7 ] && echo "$(_fmt debug) ${@}" 1>&2 || true; }
+
+# export logging functions
+export -f _fmt
+export -f emergency
+export -f alert
+export -f critical
+export -f error
+export -f warning
+export -f notice
+export -f info
+export -f debug
 
 function help () {
   echo "" 1>&2
@@ -151,14 +138,6 @@ if [ "${arg_h}" = "1" ]; then
   help "Help using ${0}"
 fi
 
-
-### Validation (decide what's required for running your script and error out)
-#####################################################################
-
-#[ -z "${arg_f}" ]     && help      "Setting a filename with -f is required"
-[ -z "${LOG_LEVEL}" ] && emergency "Cannot continue without LOG_LEVEL. "
-
-
 ### Runtime
 #####################################################################
 
@@ -168,48 +147,32 @@ fi
 set -o errexit
 set -o nounset
 
-# Bash will remember & return the highest exitcode in a chain of pipes.
-# This way you can catch the error in case mysqldump fails in `mysqldump |gzip`
-set -o pipefail
-
-if [[ "${OSTYPE}" == "darwin"* ]]; then
-  info "You are on OSX"
-fi
+### Import variables
+######################################################################
+source ./defaults
 
 ### Begin Program
-#####################################################################
-if [ ! -d "target" ]; then
-    info "Creating target/"
-    mkdir -pv target
+######################################################################
+if [ ! -d "${TARGET_DIR}" ]; then
+    info "Creating target dir"
+    mkdir -pv "${TARGET_DIR}"
 fi
 
-cd target/
-
-info "Cloning latest crosstool-ng"
-if [ ! -d "crosstool-ng" ]; then
-    git clone https://github.com/crosstool-ng/crosstool-ng --depth=1
+if [ ! -d "${SOURCE_DIR}" ]; then
+    info "Creating source dir"
+    mkdir -pv "${SOURCE_DIR}"
 fi
-cd crosstool-ng/
-git fetch
-git reset --hard "origin/master"
 
-./bootstrap
-./configure --prefix="${__dir}/target/crosstool-ng-install"
-make
-make install
+cd "${TARGET_DIR}"
 
-PATH="${PATH}:${__dir}/target/crosstool-ng-install/bin"
+SCRIPT="${SCRIPTS_DIR}/${1}.sh"
+# make it's a valid script
+if [ ! -f "${SCRIPT}" ]; then
+    error "Invalid script name: does not exist! >> ${SCRIPT}"
+    error "Exiting..."
+    exit 1
+fi
 
-cd "${__dir}/target"
-
-cp -v ../config-cortexa7_neonvfpv4 ./.config
-
-TMP="${__dir}/target/cross-tools"
-sed -i 's>\[PREFIX_DIR\]>'"${TMP}"'>g' ./.config
-
-CORES=$(grep "^core id" /proc/cpuinfo | sort -u | wc -l)
-THREADS=$(echo "${CORES}" "1.5" | awk '{printf "%.0f\n",$1*$2}')
-sed -i 's>\[THREADS\]>'"${THREADS}"'>g' ./.config
-
-ct-ng build
+# Run the script
+"${SCRIPT}"
 
