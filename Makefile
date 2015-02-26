@@ -6,7 +6,7 @@
 # Bits: 32
 ###
 
-all: clean crosstool-ng cross-tools kernel firmware
+all: clean crosstool-ng cross-tools
 
 crosstool-ng:
 	./run.sh crosstool-ng
@@ -15,23 +15,13 @@ crosstool-ng:
 cross-tools:
 	./run.sh cross-tools
 
-kernel:
-
-firmware:
-
 clean:
-	chmod -R +w target && rm -rf target
-
+	chmod -R +w target || true
+	rm -rf target || true
 
 clean-crosstool-ng:
-	rm -rf target/crosstool-ng
-
+	rm -rf target/crosstool-ng || true
 
 clean-cross-tools:
-	chmod -R +w target/cross-tools && rm -rf target/cross-tools
-
-clean-kernel:
-	rm -rf target/kernel
-
-clean-firmware:
-	rm -rf target/firmware
+	chmod -R +w target/cross-tools || true
+	rm -rf target/cross-tools || true
