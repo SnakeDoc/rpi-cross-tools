@@ -11,9 +11,16 @@ all: clean crosstool-ng cross-tools
 crosstool-ng:
 	./run.sh crosstool-ng
 
+crosstool-ng-archive:
+	./run archive crosstool-ng
 
 cross-tools:
 	./run.sh cross-tools
+
+cross-tools-archive:
+	./run.sh archive cross-tools
+
+release: clean-crosstool-ng clean-cross-tools crosstool-ng cross-tools cross-tools-archive
 
 clean:
 	chmod -R +w target || true
