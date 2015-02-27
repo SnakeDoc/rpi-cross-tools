@@ -174,5 +174,5 @@ if [ ! -f "${SCRIPT}" ]; then
 fi
 
 # Run the script
-"${SCRIPT}" "${2}"
+"${SCRIPT}" "${2:-}"
 
