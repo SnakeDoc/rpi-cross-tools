@@ -28,13 +28,13 @@ BASENAME="$(basename ${DIR})"
 ARCHIVE_NAME="${BASENAME}.tar.gz"
 WRAPPER_ARCHIVE_NAME="${BASENAME}-${DATE}.tar.gz"
 
-mkdir -pv "${TARGET_DIR}/temp/${BASENAME}"
-cd "${TARGET_DIR}/temp/${BASENAME}"
+mkdir -pv "${TARGET_DIR}/temp"
 
 # create tar.gz
 info "Creating tar.gz of archive..."
-tar -pzcvf "${ARCHIVE_NAME}" "${DIR}"
+tar -pzcvf "${TARGET_DIR}/temp/${ARCHIVE_NAME}" "${DIR}"
 
+cd "${TARGET_DIR}/temp"
 cat > install.sh << "EOF"
 #!/usr/bin/env bash
 #
@@ -80,15 +80,13 @@ echo
 EOF
 
 # insert our archive name
-sed -i 's>\[ARCHIVE_NAME\]>'"${ARCHIVE_NAME}"'>g'
+sed -i 's>\[ARCHIVE_NAME\]>'"${ARCHIVE_NAME}"'>g' install.sh
 
 # make sure our install script is executable
 chmod +x install.sh
 
-cd "${TARGET_DIR}/temp/"
-
 # pack the entire dir
-tar -pzcvf "${ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" "${TARGET_DIR}"/temp/*
+tar -pzcvf "${ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" *.tar.gz *.sh
 sync
 
 cd "${TARGET_DIR}"

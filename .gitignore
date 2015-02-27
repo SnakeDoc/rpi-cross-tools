@@ -40,3 +40,4 @@ target/
 
 # lili build logs
 runtime.log*
+archives/*
