@@ -19,6 +19,8 @@ clean:
 	chmod -R +w target || true
 	rm -rf target || true
 
+clean-bin: clean-crosstool-ng clean-cross-tools
+
 clean-crosstool-ng:
 	rm -rf target/crosstool-ng || true
 

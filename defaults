@@ -24,3 +24,5 @@ export CT_NG="${TARGET_DIR}/${CT_NG_NAME}/bin/ct-ng"
 export XTOOLS_NAME="cross-tools"
 export XTOOLS_DIR="${TARGET_DIR}/${XTOOLS_NAME}"
 
+export ARCHIVE_DIR="${__dir}/archives"
+
