@@ -7,7 +7,7 @@
 #
 ###
 
-all: clean crosstool-ng cross-tools
+all: clean rpi2
 
 crosstool-ng:
 	./run.sh crosstool-ng || true
