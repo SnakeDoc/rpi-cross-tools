@@ -9,10 +9,6 @@
 ### Begin Program
 #####################################################################
 
-# set local variables
-XTOOLS_TARGET="${TARGET}-${XTOOLS_NAME}"
-XTOOLS_DIR="${TARGET_DIR}/${XTOOLS_TARGET}"
-
 # make sure we have a target
 TARGET="${1:-}"
 if [ ! -f "${CONFIGS_DIR}/${TARGET}" ]; then
@@ -20,6 +16,10 @@ if [ ! -f "${CONFIGS_DIR}/${TARGET}" ]; then
     error "Exiting..."
     exit 1
 fi
+
+# set local variables
+XTOOLS_TARGET="${TARGET}-${XTOOLS_NAME}"
+XTOOLS_DIR="${TARGET_DIR}/${XTOOLS_TARGET}"
 
 # clean the cross-tools out if they already exist
 if [ -d "${XTOOLS_DIR}" ]; then
