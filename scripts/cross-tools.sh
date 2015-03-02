@@ -9,6 +9,10 @@
 ### Begin Program
 #####################################################################
 
+# set local variables
+XTOOLS_TARGET="${TARGET}-${XTOOLS_NAME}"
+XTOOLS_DIR="${TARGET_DIR}/${XTOOLS_TARGET}"
+
 # make sure we have a target
 TARGET="${1:-}"
 if [ ! -f "${CONFIGS_DIR}/${TARGET}" ]; then
@@ -18,10 +22,10 @@ if [ ! -f "${CONFIGS_DIR}/${TARGET}" ]; then
 fi
 
 # clean the cross-tools out if they already exist
-if [ -d "${TARGET}-${XTOOLS_DIR}" ]; then
-    warn "${TARGET}-${XTOOLS_NAME} already built; cleaning..."
-    chmod -R +w "${TARGET}-${XTOOLS_DIR}"
-    rm -rf "${TARGET}-${XTOOLS_DIR}"
+if [ -d "${XTOOLS_DIR}" ]; then
+    warn "${XTOOLS_TARGET} already built; cleaning..."
+    chmod -R +w "${XTOOLS_DIR}"
+    rm -rf "${XTOOLS_DIR}"
 fi
 
 cd "${SOURCE_DIR}"
@@ -29,7 +33,7 @@ rm -fv .config*
 
 cp -v "${CONFIGS_DIR}/${TARGET}" .config
 
-sed -i 's>\[PREFIX_DIR\]>'"${TARGET}-${XTOOLS_DIR}"'>g' .config
+sed -i 's>\[PREFIX_DIR\]>'"${XTOOLS_DIR}"'>g' .config
 
 sed -i 's>\[THREADS\]>'"${THREADS}"'>g' ./.config
 
