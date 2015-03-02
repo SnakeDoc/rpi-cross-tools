@@ -29,7 +29,7 @@ rm -fv .config*
 
 cp -v "${CONFIGS_DIR}/${TARGET}" .config
 
-sed -i 's>\[PREFIX_DIR\]>'"${XTOOLS_DIR}"'>g' .config
+sed -i 's>\[PREFIX_DIR\]>'"${TARGET}-${XTOOLS_DIR}"'>g' .config
 
 sed -i 's>\[THREADS\]>'"${THREADS}"'>g' ./.config
 
