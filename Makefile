@@ -1,26 +1,27 @@
 ###
-# Makefile for Raspberry Pi 2 Compiler
-# ARCH: ARMv7
-# CPU:  Cortex-A7
-# FPU:  Neon-VFPv4 
-# Bits: 32
+# Makefile for cross-tools
+#
+# Contructs a cross-compilation toolchain
+#
+# Usage: make <your-target>
+#
 ###
 
 all: clean crosstool-ng cross-tools
 
 crosstool-ng:
-	./run.sh crosstool-ng
+	./run.sh crosstool-ng || true
 
 crosstool-ng-archive:
 	./run archive crosstool-ng
 
-cross-tools:
-	./run.sh cross-tools
+rpi: crosstool-ng
+	./run.sh cross-tools rpi
+	./run.sh archive rpi-cross-tools
 
-cross-tools-archive:
-	./run.sh archive cross-tools
-
-release: clean-crosstool-ng clean-cross-tools crosstool-ng cross-tools cross-tools-archive
+rpi2: crosstool-ng
+	./run.sh cross-tools rpi2
+	./run.sh archive rpi2-cross-tools
 
 clean:
 	chmod -R +w target || true
@@ -32,5 +33,5 @@ clean-crosstool-ng:
 	rm -rf target/crosstool-ng || true
 
 clean-cross-tools:
-	chmod -R +w target/cross-tools || true
-	rm -rf target/cross-tools || true
+	chmod -R +w target/*cross-tools || true
+	rm -rf target/*cross-tools || true

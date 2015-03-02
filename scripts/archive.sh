@@ -3,7 +3,7 @@
 # archive.sh
 #
 # This file:
-#  - Archives the arm-rpi2-linux-gnueabihf cross-compilation toolchain
+#  - Archives the cross-compilation toolchain
 #
 
 ### Begin Program

@@ -11,9 +11,9 @@
 
 # test to see if crosstool-ng is already built
 if [ -f "${CT_NG}" ]; then
-    error "${CT_NG_NAME} already built!"
-    error "Did you mean to rebuild it? -- first run: make clean-crosstool-ng"
-    error "Exiting..."
+    warn "${CT_NG_NAME} already built!"
+    warn "Did you mean to rebuild it? -- first run: make clean-crosstool-ng"
+    warn "Nothing to do..."
     exit 1
 fi
 
