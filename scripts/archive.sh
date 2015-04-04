@@ -91,7 +91,7 @@ tar -pzcvf "${ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" *.tar.gz *.sh
 sync
 
 # make a synlink to the current archive
-ln -svf "$ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" "${ARCHIVE_DIR}/${ARCHIVE_CURRENT_NAME}"
+ln -svf "${ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" "${ARCHIVE_DIR}/${ARCHIVE_CURRENT_NAME}"
 
 cd "${TARGET_DIR}"
 rm -rf "${TARGET_DIR}/temp"
