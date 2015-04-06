@@ -5,6 +5,13 @@ Automated scripts which build a cross-compilation toolchain targeting Raspberry 
 
 Uses Linaro versions of GCC, Binutils, and Glibc to provide performance and optimization improvements on the ARM architecture CPU family.
 
+[![Build Status](http://build.vanomaly.net/buildStatus/icon?job=rpi-cross-tools)](http://build.vanomaly.net/job/rpi-cross-tools/)
+
+#### Downloads:
+
+ * [Raspberry Pi Cross Tools](http://build.vanomaly.net/job/rpi-cross-tools/ws/archives/rpi-cross-tools-current.tar.gz)
+ * [Raspberry Pi 2 Cross Tools](http://build.vanomaly.net/job/rpi-cross-tools/ws/archives/rpi2-cross-tools-current.tar.gz)
+
 #### Raspberry Pi Target Specs:
 
  - Target: Raspberry Pi
