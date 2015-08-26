@@ -90,6 +90,10 @@ chmod +x install.sh
 tar -pzcvf "${ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" *.tar.gz *.sh
 sync
 
+# checksum the archives
+cd "${ARCHIVE_DIR}/"
+md5sum * > ./checksum.txt
+
 # make a synlink to the current archive
 ln -svf "${ARCHIVE_DIR}/${WRAPPER_ARCHIVE_NAME}" "${ARCHIVE_DIR}/${ARCHIVE_CURRENT_NAME}"
 
